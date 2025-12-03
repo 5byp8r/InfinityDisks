@@ -1,6 +1,6 @@
 <?php
 if (session_status() === PHP_SESSION_NONE) session_start();
-    require_once 'conexao.php';
+require_once 'conexao.php';
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     header('Location: tela_produtos.php');
@@ -8,87 +8,61 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 }
 
 $id = filter_input(INPUT_POST, 'id', FILTER_VALIDATE_INT);
-$descricao = trim(filter_input(INPUT_POST, 'descricao', FILTER_SANITIZE_SPECIAL_CHARS));
-categoria = trim(filter_input(INPUT_POST, 'categoria', FILTER_SANITIZE_SPECIAL_CHARS));
-$tipo = trim(filter_input(INPUT_POST, 'tipo', FILTER_SANITIZE_SPECIAL_CHARS));
+$descricao  = trim($_POST['descricao'] ?? '');
+$categoria  = trim($_POST['categoria'] ?? '');
+$tipo       = trim($_POST['tipo'] ?? '');
 $quantidade = filter_input(INPUT_POST, 'quantidade', FILTER_VALIDATE_INT);
-$preco = filter_input(INPUT_POST, 'preco', FILTER_VALIDATE_FLOAT);
+$preco      = filter_input(INPUT_POST, 'preco', FILTER_VALIDATE_FLOAT);
 
 $erros = [];
-if ($id === false || $id <= 0)
-    $erros[] = 'ID inválido.';
-if (!$descricao)
-    $erros[] = 'Descrição é obrigatória.';
-if (!$categoria)
-    $erros[] = 'Categoria é obrigatória.';
-if (!$tipo || !in_array(strtolower($tipo), ['vinil','cd']))
-    $erros[] = 'Tipo inválido.';
-if ($quantidade === false || $quantidade < 0)
-    $erros[] = 'Quantidade deve ser inteiro não negativo.';
-if ($preco === false || $preco <= 0)
-    $erros[] = 'Preço deve ser maior que zero.';
+if ($id === false || $id <= 0) $erros[] = 'ID inválido.';
+if ($descricao === '') $erros[] = 'Descrição é obrigatória.';
+if ($categoria === '') $erros[] = 'Categoria é obrigatória.';
+if (!$tipo || !in_array(strtolower($tipo), ['vinil', 'cd'])) $erros[] = 'Tipo inválido.';
+if ($quantidade === false || $quantidade < 0) $erros[] = 'Quantidade inválida.';
+if ($preco === false || $preco <= 0) $erros[] = 'Preço inválido.';
 
-if (!empty($erros)) {
+if ($erros) {
     $_SESSION['mensagem'] = $erros;
     $_SESSION['tipo_mensagem'] = 'danger';
-    header("Location: tela_produtos.php?id={$id}");
+    header("Location: tela_produtos.php");
     exit;
 }
 
 try {
-    $sql = 'SELECT * FROM produtos WHERE id = :id LIMIT 1';
-    $stmt = $pdo->prepare($sql);
+    // verifica existencia
+    $stmt = $pdo->prepare("SELECT * FROM produtos WHERE id = :id LIMIT 1");
     $stmt->execute([':id' => $id]);
-    $produto_atual = $stmt->fetch(PDO::FETCH_ASSOC);
+    $atual = $stmt->fetch();
 
-    if (!$produto_atual) {
+    if (!$atual) {
         $_SESSION['mensagem'] = ['Produto não encontrado.'];
         $_SESSION['tipo_mensagem'] = 'danger';
         header('Location: tela_produtos.php');
         exit;
     }
 
-    $houve_alteracao = (
-        $produto_atual['descricao'] !== $descricao ||
-        $produto_atual['categoria'] !== $categoria ||
-        $produto_atual['tipo'] !== $tipo ||
-        intval($produto_atual['quantidade']) !== intval($quantidade) ||
-        floatval($produto_atual['preco']) !== floatval($preco)
-    );
-
-    if (!$houve_alteracao) {
-        $_SESSION['mensagem'] = ['Nenhuma alteração foi realizada.'];
-        $_SESSION['tipo_mensagem'] = 'warning';
-        header("Location: tela_produtos.php?id={$id}");
-        exit;
-    }
-
-    $sql = 'UPDATE produtos SET descricao = :descricao, categoria = :categoria, tipo = :tipo, quantidade = :quantidade, preco = :preco WHERE id = :id';
+    $sql = "UPDATE produtos
+            SET descricao = :descricao, categoria = :categoria, tipo = :tipo, quantidade = :quantidade, preco = :preco
+            WHERE id = :id";
     $stmt = $pdo->prepare($sql);
     $stmt->execute([
         ':descricao' => $descricao,
         ':categoria' => $categoria,
-        ':tipo' => $tipo,
+        ':tipo' => strtolower($tipo),
         ':quantidade' => $quantidade,
         ':preco' => $preco,
         ':id' => $id
     ]);
 
-    if ($stmt->rowCount() > 0) {
-        $_SESSION['mensagem'] = ['Produto atualizado com sucesso.'];
-        $_SESSION['tipo_mensagem'] = 'success';
-    }
-    else {
-        $_SESSION['mensagem'] = ['Nenhuma linha alterada.'];
-        $_SESSION['tipo_mensagem'] = 'warning';
-    }
-    header('Location: tela_produtos.php');
-    exit;
-}
+    $_SESSION['mensagem'] = ['Produto atualizado com sucesso.'];
+    $_SESSION['tipo_mensagem'] = 'success';
+} 
 catch (PDOException $e) {
-    $_SESSION['mensagem'] = ['Erro ao atualizar produto.'];
+    $_SESSION['mensagem'] = ['Erro ao atualizar produto: ' . $e->getMessage()];
     $_SESSION['tipo_mensagem'] = 'danger';
-    header("Location: tela_produtos.php?id={$id}");
-    exit;
 }
+
+header('Location: tela_produtos.php');
+exit;
 ?>
