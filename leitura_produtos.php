@@ -1,5 +1,5 @@
 <?php // leitura_produtos.php - busca produtos do banco
-require_once 'conexao.php';
+require_once 'Model/conexao.php';
 
 try {
     $sql = "SELECT * FROM produtos ORDER BY data_cadastro DESC";

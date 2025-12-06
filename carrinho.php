@@ -1,6 +1,6 @@
 <?php
 if (session_status() === PHP_SESSION_NONE) session_start();
-require_once 'conexao.php';
+require_once 'Model/conexao.php';
 
 $mensagens = $_SESSION['mensagem'] ?? [];
 $tipo_mensagem = $_SESSION['tipo_mensagem'] ?? '';
