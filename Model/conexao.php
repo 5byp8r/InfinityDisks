@@ -1,14 +1,22 @@
 <?php // conexao.php - conexão com o banco (PDO)
 class Conexao
 {
+    private static Conexao $conexao;
     private $host = 'localhost';
     private $dbname = 'db_web_loja';
     private $username = 'root';
     private $password = '';
     private $pdo;
 
-    public function __construct(){
+    private function __construct(){
         $this->openConnection();
+    }
+
+    public static function getInstance(){
+        if(!isset(self::$conexao)){
+            self::$conexao = new Conexao();
+        }
+        return self::$conexao;
     }
 
     public function openConnection()
@@ -32,5 +40,5 @@ class Conexao
         $this->pdo = null;
     }
 
-	public function getPdo() { return $this->pdo; }
+	public function getPDO() { return $this->pdo; }
 }

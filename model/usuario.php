@@ -4,6 +4,7 @@ class Usuario
     private int $id, $tipo;
     private string $nome, $email, $senha;
     private $data_criacao;
+    private Conexao $conexao;
 
     public function __construct(int $id, int $tipo, string $nome, string $email, string $senha, $data_criacao)
     {
@@ -13,11 +14,12 @@ class Usuario
         $this->email = $email;
         $this->senha = $senha;
         $this->data_criacao = $data_criacao;
+        $this->conexao = Conexao::getInstance();
     }
 
-    public function getAll(PDO $conn)
+    public function getAll()
     {
-        $stmt = $conn->prepare("SELECT * FROM usuarios");
+        $stmt = $this->conexao->getPDO()->prepare("SELECT * FROM usuarios");
         $stmt->execute();
         $result = [];
 
@@ -29,9 +31,9 @@ class Usuario
         return $result;
     }
 
-    public function getUsuario(PDO $conn, int $id)
+    public function getUsuario(int $id)
     {
-        $stmt = $conn->prepare("SELECT * FROM usuarios WHERE id = :id");
+        $stmt = $this->conexao->getPDO()->prepare("SELECT * FROM usuarios WHERE id = :id");
         $stmt->bindParam(':id', $id, PDO::PARAM_INT);
         $stmt->execute();
 
