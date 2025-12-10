@@ -1,5 +1,7 @@
 <?php
-session_start();
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 
 // produtos fake
 $produtos = [
@@ -43,7 +45,7 @@ $produtos = [
                         <td><?= htmlspecialchars($p["categoria"]) ?></td>
                         <td>R$ <?= number_format($p["preco"], 2, ",", ".") ?></td>
                         <td class="text-center">
-                            <form action="admin_remover_produto.php" method="POST">
+                            <form action="view/admin_remover_produto.php" method="POST">
                                 <input type="hidden" name="id" value="<?= $p["id"] ?>">
                                 <button type="submit" class="btn btn-danger btn-sm">Excluir</button>
                             </form>

@@ -1,5 +1,7 @@
 <?php
-session_start();
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 
 // vendas fake
 $vendas = [
@@ -27,7 +29,7 @@ $vendas = [
 
         <div class="card-body">
 
-            <form method="GET" action="admin_vendas.php" class="row g-3 mb-4">
+            <form method="GET" action="view/admin_vendas.php" class="row g-3 mb-4">
 
                 <div class="col-md-4">
                     <label class="form-label">Data Inicial:</label>

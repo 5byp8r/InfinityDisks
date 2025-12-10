@@ -1,5 +1,7 @@
 <?php
-session_start();
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 
 // carrinho placegolder
 $carrinho = [
@@ -45,11 +47,11 @@ foreach ($carrinho as $item) {
                 Total: <span class="text-success">R$ <?= number_format($total, 2, ",", ".") ?></span>
             </h3>
 
-            <form action="confirmar_compra.php" method="POST" class="text-end">
+            <form action="view/confirmar_compra.php" method="POST" class="text-end">
                 <button type="submit" class="btn btn-success">Confirmar Compra</button>
             </form>
 
-            <form action="remover_item.php" method="POST">
+            <form action="view/remover_item.php" method="POST">
                 <input type="hidden" name="produto_id" value="<?= $id ?>">
                 <button class="btn btn-danger btn-sm">Remover</button>
             </form>

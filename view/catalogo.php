@@ -1,5 +1,7 @@
 <?php
-session_start();
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 
 // categorias placeholder
 $categorias = ["Todos", "Vinil", "CD", "cinema"];
@@ -32,7 +34,7 @@ $produtos = [
         <div class="card-body">
 
             <!-- filtro -->
-            <form method="GET" action="catalogo.php" class="mb-4">
+            <form method="GET" action="view/catalogo.php" class="mb-4">
                 <label class="form-label fw-bold">Filtrar por categoria:</label>
                 <div class="input-group">
                     <select name="categoria" class="form-select">
@@ -66,7 +68,7 @@ $produtos = [
                                     R$ <?= number_format($p['preco'], 2, ",", ".") ?>
                                 </p>
 
-                                <form action="adicionar_carrinho.php" method="POST" class="mt-3">
+                                <form action="view/adicionar_carrinho.php" method="POST" class="mt-3">
                                     <input type="hidden" name="produto_id" value="<?= $p['id'] ?>">
 
                                     <label class="form-label">Quantidade:</label>
