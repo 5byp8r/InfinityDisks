@@ -3,75 +3,107 @@ session_start();
 
 // vendas fake
 $vendas = [
-    ["id" => 1001, "cliente_id" => 8, "data" => "2001-09-11", "total" => 180.00],
-    ["id" => 1002, "cliente_id" => 12, "data" => "2001-09-11", "total" => 320.00],
+    ["id" => 1001, "cliente_id" => 8, "data" => "2008-06-23", "total" => 180.00],
+    ["id" => 1002, "cliente_id" => 12, "data" => "1991-06-23", "total" => 320.00],
 ];
 ?>
 
 <!DOCTYPE html>
-<html>
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <title>Admin - Vendas</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css">
 </head>
-<body class="bg-light">
+<body>
 
-<div class="container mt-5">
+<!-- menu de cima -->
+<header class="header-top">
+    <div class="header-logo">
+        <a href="index.php"><b>INFINITY DISKS</b></a>
+    </div>
 
-    <div class="card shadow-sm">
-        <div class="card-header bg-dark text-white text-center">
-            <h2>Vendas Realizadas</h2>
-        </div>
+    <div class="header-search">
+        <input type="text" placeholder="Buscar...">
+        <button>PESQUISAR</button>
+    </div>
 
-        <div class="card-body">
+    <div class="header-actions">
+        <a href="admin_produtos.php">ADMIN</a>
+        <a href="carrinho.php">CARRINHO</a>
+    </div>
+</header>
 
-            <form method="GET" action="admin_vendas.php" class="row g-3 mb-4">
+<!-- menu de navegação -->
+<nav class="navbar">
+    <ul>
+        <li><a href="catalogo.php">Catálogo</a></li>
+        <li><a href="admin_cadastro_produto.php">Cadastrar Produto</a></li>
+        <li><a href="admin_produtos.php">Gerenciar Produtos</a></li>
+        <li><a href="admin_vendas.php">Vendas</a></li>
+    </ul>
+</nav>
 
-                <div class="col-md-4">
-                    <label class="form-label">Data Inicial:</label>
-                    <input type="date" name="data_inicio" class="form-control">
-                </div>
+<div class="page-container">
 
-                <div class="col-md-4">
-                    <label class="form-label">Data Final:</label>
-                    <input type="date" name="data_fim" class="form-control">
-                </div>
+    <!-- sidebar -->
+    <aside class="sidebar">
+        <h3>Painel Admin</h3>
+        <ul>
+            <li><a href="admin_cadastro_produto.php">Cadastrar Produto</a></li>
+            <li><a href="admin_produtos.php">Produtos</a></li>
+            <li><a href="admin_vendas.php">Vendas</a></li>
+        </ul>
+    </aside>
 
-                <div class="col-md-4 d-flex align-items-end">
-                    <button type="submit" class="btn btn-primary w-100">Filtrar</button>
-                </div>
+    <!-- conteúdo -->
+    <section class="products">
+        <h2>Vendas Realizadas</h2>
 
-            </form>
+        <form method="GET" action="admin_vendas.php" class="filter-form">
 
-            <div class="table-responsive">
-                <table class="table table-hover table-bordered align-middle">
-
-                    <tr class="table-dark">
-                        <th>ID</th>
-                        <th>ID Cliente</th>
-                        <th>Data</th>
-                        <th>Total</th>
-                    </tr>
-
-                    <?php foreach ($vendas as $v): ?>
-                        <tr>
-                            <td><?= $v["id"] ?></td>
-                            <td><?= $v["cliente_id"] ?></td>
-                            <td><?= $v["data"] ?></td>
-                            <td>R$ <?= number_format($v["total"], 2, ",", ".") ?></td>
-                        </tr>
-                    <?php endforeach; ?>
-
-                </table>
+            <div>
+                <label>Data Inicial:</label>
+                <input type="date" name="data_inicio">
             </div>
 
-        </div>
-    </div>
+            <div>
+                <label>Data Final:</label>
+                <input type="date" name="data_fim">
+            </div>
+
+            <div>
+                <button type="submit">Filtrar</button>
+            </div>
+
+        </form>
+
+        <table class="table">
+            <tr>
+                <th>ID</th>
+                <th>ID Cliente</th>
+                <th>Data</th>
+                <th>Total</th>
+            </tr>
+
+            <?php foreach ($vendas as $v): ?>
+            <tr>
+                <td><?= $v["id"] ?></td>
+                <td><?= $v["cliente_id"] ?></td>
+                <td><?= $v["data"] ?></td>
+                <td>R$ <?= number_format($v["total"], 2, ",", ".") ?></td>
+            </tr>
+            <?php endforeach; ?>
+        </table>
+
+    </section>
 
 </div>
 
-<script src="./bootstrap/js/bootstrap.bundle.min.js"></script>
+<footer class="footer">
+    <h4>Infinity Disks</h4>
+    <p>Todos os direitos reservados.</p>
+</footer>
+
 </body>
 </html>

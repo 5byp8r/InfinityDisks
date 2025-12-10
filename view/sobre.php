@@ -1,32 +1,68 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <title>Sobre - Infinity Disks</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css">
 </head>
-<body class="bg-light">
+<body>
 
-<div class="container mt-5">
-    <div class="card shadow-sm">
-        <div class="card-header bg-secondary text-white text-center">
-            <h2>Sobre a Infinity Disks</h2>
-        </div>
-
-        <div class="card-body">
-
-            <p><strong>Ramo:</strong> Loja de discos (vinil e CDs)</p>
-            <p><strong>Público Alvo:</strong> pessoas</p>
-            <p><strong>Estilo do Site:</strong> webert</p>
-            <p><strong>Paleta de cores:</strong> colorida</p>
-            <p><strong>Objetivo:</strong> ganhar ponto B)</p>
-
-        </div>
+<header class="header-top">
+    <div class="header-logo">
+        <a href="index.php"><b>INFINITY DISKS</b></a>
     </div>
+
+    <div class="header-search">
+        <input type="text" placeholder="Buscar...">
+        <button>PESQUISAR</button>
+    </div>
+
+    <div class="header-actions">
+        <a href="login.php">LOGIN</a>
+        <a href="carrinho.php">CARRINHO</a>
+    </div>
+</header>
+
+<nav class="navbar">
+    <ul>
+        <li><a href="catalogo.php">Catálogo</a></li>
+        <li><a href="admin_cadastro_produto.php">Cadastrar Produto</a></li>
+        <li><a href="admin_produtos.php">Produtos</a></li>
+        <li><a href="admin_vendas.php">Vendas</a></li>
+        <li><a href="sobre.php">Sobre</a></li>
+    </ul>
+</nav>
+
+<div class="page-container">
+
+    <aside class="sidebar">
+        <h3>Informações</h3>
+        <ul>
+            <li><a href="sobre.php">Quem Somos</a></li>
+            <li><a href="catalogo.php">Catálogo</a></li>
+        </ul>
+    </aside>
+
+    <section class="products">
+        <h2>Sobre a Infinity Disks</h2>
+
+        <p><strong>Ramo:</strong> Loja de discos (Vinil e CDs)</p>
+        <br>
+        <p><strong>Público Alvo:</strong> Pessoas</p>
+        <br>
+        <p><strong>Estilo do Site:</strong> webert</p>
+        <br>
+        <p><strong>Paleta de cores:</strong> colorida</p>
+        <br>
+        <p><strong>Objetivo:</strong> ganhar ponto B)</p>
+    </section>
+
 </div>
 
-<script src="./bootstrap/js/bootstrap.bundle.min.js"></script>
+<footer class="footer">
+    <h4>Infinity Disks</h4>
+    <p>Todos os direitos reservados.</p>
+</footer>
 
 </body>
 </html>

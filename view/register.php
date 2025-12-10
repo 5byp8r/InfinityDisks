@@ -4,39 +4,68 @@
 <head>
     <meta charset="UTF-8">
     <title>Cadastrar - Infinity Disks</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="style.css">
 </head>
-<body class="bg-light">
+<body>
 
-<div class="container mt-5">
-    <div class="card shadow-sm">
-        <div class="card-header bg-primary text-white text-center">
-            <h2>Criar Conta</h2>
-        </div>
-
-        <div class="card-body">
-
-            <form action="processa_register.php" method="POST">
-
-                <label class="form-label">Nome:</label><br>
-                <input type="text" name="nome" class="form-control mb-3"><br>
-
-                <label class="form-label">Email:</label><br>
-                <input type="email" name="email" class="form-control mb-3"><br>
-
-                <label class="form-label">Senha:</label><br>
-                <input type="password" name="senha" class="form-control mb-3"><br>
-
-                <button type="submit" class="btn btn-success w-100">Cadastrar</button>
-
-            </form>
-
-        </div>
+<header class="header-top">
+    <div class="header-logo">
+        <h2>Infinity Disks</h2>
     </div>
+
+    <div class="header-search">
+        <input type="text" placeholder="Pesquisar...">
+    </div>
+
+    <div class="header-actions">
+        <a href="login.php">Login</a>
+        <a href="carrinho.php">Carrinho</a>
+    </div>
+</header>
+
+<nav class="navbar">
+    <ul>
+        <li><a href="index.php">Início</a></li>
+        <li><a href="catalogo.php">Catálogo</a></li>
+        <li><a href="minhas_compras.php">Minhas Compras</a></li>
+    </ul>
+</nav>
+
+<div class="page-container">
+
+    <div class="products" style="max-width: 420px; margin: auto;">
+
+        <h2 style="margin-bottom: 20px;">Criar Conta</h2>
+
+        <form action="processa_register.php" method="POST">
+
+            <label>Nome:</label>
+            <input type="text" name="nome">
+
+            <br><br>
+
+            <label>Email:</label>
+            <input type="email" name="email">
+
+            <br><br>
+
+            <label>Senha:</label>
+            <input type="password" name="senha">
+
+            <br><br>
+
+            <button type="submit">Cadastrar</button>
+
+        </form>
+    </div>
+
 </div>
 
-<script src="./bootstrap/js/bootstrap.bundle.min.js"></script>
+<footer class="footer">
+    <h4>Infinity Disks</h4>
+    <p>Loja online de discos e tecnologia.</p>
+</footer>
 
 </body>
 </html>

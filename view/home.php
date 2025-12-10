@@ -3,53 +3,80 @@ session_start();
 ?>
 
 <!DOCTYPE html>
-<html>
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <title>Infinity Disks - Home</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css">
 </head>
-<body class="bg-light">
+<body>
 
-<div class="container mt-5">
-    <div class="card shadow-sm">
-        <div class="card-header bg-dark text-white text-center">
-            <h2>Bem-vindo(a) à Infinity Disks</h2>
-        </div>
-
-        <div class="card-body text-center">
-
-            <?php if (!isset($_SESSION['user'])): ?>
-
-                <p class="mt-3">
-                    <a href="login.php" class="btn btn-primary me-2">Entrar</a>
-                    <a href="register.php" class="btn btn-outline-primary">Cadastrar</a>
-                </p>
-
-            <?php else: ?>
-
-                <p class="fw-bold fs-5">Olá, <?= htmlspecialchars($_SESSION['user']['nome']) ?>!</p>
-
-                <p class="mt-3">
-                    <a href="catalogo.php" class="btn btn-outline-dark me-2">Catálogo</a>
-                    <a href="carrinho.php" class="btn btn-outline-dark me-2">Carrinho</a>
-                    <a href="minhas_compras.php" class="btn btn-outline-dark me-2">Minhas Compras</a>
-
-                    <?php if ($_SESSION['user']['tipo'] === 'admin'): ?>
-                        <a href="admin_cadastro_produto.php" class="btn btn-warning me-2">Admin - Produtos</a>
-                    <?php endif; ?>
-
-                    <a href="logout.php" class="btn btn-danger">Sair</a>
-                </p>
-
-            <?php endif; ?>
-
-        </div>
+<header class="header-top">
+    <div class="header-logo">
+        <a href="index.php"><b>INFINITY DISKS</b></a>
     </div>
+
+    <div class="header-search">
+        <input type="text" placeholder="Buscar...">
+        <button>PESQUISAR</button>
+    </div>
+
+    <div class="header-actions">
+        <a href="carrinho.php">CARRINHO</a>
+    </div>
+</header>
+
+<nav class="navbar">
+    <ul>
+        <li><a href="catalogo.php">Catálogo</a></li>
+        <li><a href="sobre.php">Sobre</a></li>
+    </ul>
+</nav>
+
+<div class="page-container">
+
+    <section style="flex:1; text-align:center;">
+        <h2>Bem-vindo(a) à Infinity Disks</h2>
+        <br>
+
+        <?php if (!isset($_SESSION['user'])): ?>
+
+            <p>
+                <a href="login.php"><button>Entrar</button></a>
+                &nbsp;
+                <a href="register.php"><button>Cadastrar</button></a>
+            </p>
+
+        <?php else: ?>
+
+            <p><b>Olá, <?= htmlspecialchars($_SESSION['user']['nome']) ?>!</b></p>
+            <br>
+
+            <p>
+                <a href="catalogo.php"><button>Catálogo</button></a>
+                &nbsp;
+                <a href="carrinho.php"><button>Carrinho</button></a>
+                &nbsp;
+                <a href="minhas_compras.php"><button>Minhas Compras</button></a>
+                &nbsp;
+
+                <?php if ($_SESSION['user']['tipo'] === 'admin'): ?>
+                    <a href="admin_cadastro_produto.php"><button>Admin - Produtos</button></a>
+                <?php endif; ?>
+
+                &nbsp;
+                <a href="logout.php"><button>Sair</button></a>
+            </p>
+
+        <?php endif; ?>
+    </section>
+
 </div>
 
-<script src="./bootstrap/js/bootstrap.bundle.min.js"></script>
+<footer class="footer">
+    <h4>Infinity Disks</h4>
+    <p>Todos os direitos reservados.</p>
+</footer>
 
 </body>
 </html>

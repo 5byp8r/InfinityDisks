@@ -1,10 +1,10 @@
 <?php
 session_start();
 
-// carrinho placegolder
+// carrinho placeholder
 $carrinho = [
-    ["nome" => "live and learn - crush 40", "preco" => 120.00, "quantidade" => 2],
-    ["nome" => "billie jean - michael jackson", "preco" => 9.90, "quantidade" => 1],
+    ["id" => 1, "nome" => "live and learn - crush 40", "preco" => 120.00, "quantidade" => 2],
+    ["id" => 2, "nome" => "billie jean - michael jackson", "preco" => 9.90, "quantidade" => 1],
 ];
 
 $total = 0;
@@ -14,50 +14,82 @@ foreach ($carrinho as $item) {
 ?>
 
 <!DOCTYPE html>
-<html>
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <title>Carrinho - Infinity Disks</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css">
 </head>
-<body class="bg-light">
+<body>
 
-<div class="container mt-5">
-    <div class="card shadow-sm">
-        <div class="card-header bg-dark text-white text-center">
-            <h2>Seu Carrinho</h2>
-        </div>
-
-        <div class="card-body">
-
-            <?php foreach ($carrinho as $item): ?>
-                <div class="card mb-3 border-secondary">
-                    <div class="card-body">
-                        <p class="fw-bold mb-1"><?= htmlspecialchars($item["nome"]) ?></p>
-                        <p class="mb-1">Quantidade: <strong><?= $item["quantidade"] ?></strong></p>
-                        <p class="mb-0">Preço Unitário: <strong>R$ <?= number_format($item["preco"], 2, ",", ".") ?></strong></p>
-                    </div>
-                </div>
-            <?php endforeach; ?>
-
-            <h3 class="text-end me-2">
-                Total: <span class="text-success">R$ <?= number_format($total, 2, ",", ".") ?></span>
-            </h3>
-
-            <form action="confirmar_compra.php" method="POST" class="text-end">
-                <button type="submit" class="btn btn-success">Confirmar Compra</button>
-            </form>
-
-            <form action="remover_item.php" method="POST">
-                <input type="hidden" name="produto_id" value="<?= $id ?>">
-                <button class="btn btn-danger btn-sm">Remover</button>
-            </form>
-        </div>
+<header class="header-top">
+    <div class="header-logo">
+        <a href="index.php"><b>INFINITY DISKS</b></a>
     </div>
+
+    <div class="header-search">
+        <input type="text" placeholder="Buscar...">
+        <button>PESQUISAR</button>
+    </div>
+
+    <div class="header-actions">
+        <a href="login.php">LOGIN</a>
+        <a href="carrinho.php">CARRINHO</a>
+    </div>
+</header>
+
+<nav class="navbar">
+    <ul>
+        <li><a href="catalogo.php">Catálogo</a></li>
+        <li><a href="admin_cadastro_produto.php">Cadastrar Produto</a></li>
+        <li><a href="admin_produtos.php">Produtos</a></li>
+        <li><a href="admin_vendas.php">Vendas</a></li>
+        <li><a href="sobre.php">Sobre</a></li>
+    </ul>
+</nav>
+
+<div class="page-container">
+
+    <aside class="sidebar">
+        <h3>Opções</h3>
+        <ul>
+            <li><a href="catalogo.php">Continuar Comprando</a></li>
+        </ul>
+    </aside>
+
+    <!-- itens do carrinho -->
+    <section class="products">
+        <h2>Seu Carrinho</h2>
+        <br>
+
+        <?php foreach ($carrinho as $item): ?>
+            <div style="border:1px solid #ccc; padding:12px; margin-bottom:10px;">
+                <p><strong><?= htmlspecialchars($item["nome"]) ?></strong></p>
+                <p>Quantidade: <?= $item["quantidade"] ?></p>
+                <p>Preço Unitário: R$ <?= number_format($item["preco"], 2, ",", ".") ?></p>
+
+                <form action="remover_item.php" method="POST">
+                    <input type="hidden" name="produto_id" value="<?= $item["id"] ?>">
+                    <button>Remover</button>
+                </form>
+            </div>
+        <?php endforeach; ?>
+
+        <h3 style="text-align:right; margin-top:20px;">
+            Total: R$ <?= number_format($total, 2, ",", ".") ?>
+        </h3>
+
+        <form action="confirmar_compra.php" method="POST" style="text-align:right; margin-top:10px;">
+            <button>Confirmar Compra</button>
+        </form>
+    </section>
+
 </div>
 
-<script src="./bootstrap/js/bootstrap.bundle.min.js"></script>
+<footer class="footer">
+    <h4>Infinity Disks</h4>
+    <p>Todos os direitos reservados.</p>
+</footer>
 
 </body>
 </html>

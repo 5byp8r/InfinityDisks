@@ -1,43 +1,63 @@
 <?php session_start(); ?>
 <!DOCTYPE html>
-<html>
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <title>Login - Infinity Disks</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css">
 </head>
-<body class="bg-light">
+<body>
 
-<div class="container mt-5" style="max-width: 400px;">
-    <div class="card shadow-sm">
-        <div class="card-header text-center bg-dark text-white">
-            <h3 class="m-0">Login</h3>
-        </div>
-
-        <div class="card-body">
-
-            <h1 class="text-center mb-4" style="font-size: 1.5rem;">Login</h1>
-
-            <form action="processa_login.php" method="POST">
-
-                <label class="form-label">Email:</label>
-                <input type="email" name="email" class="form-control mb-3">
-
-                <label class="form-label">Senha:</label>
-                <input type="password" name="senha" class="form-control mb-4">
-
-                <button type="submit" class="btn btn-primary w-100">Entrar</button>
-            </form>
-
-            <p class="text-center mt-3">
-                <a href="register.php" class="text-decoration-none">Criar conta</a>
-            </p>
-
-        </div>
+<header class="header-top">
+    <div class="header-logo">
+        <a href="index.php"><b>INFINITY DISKS</b></a>
     </div>
+
+    <div class="header-search">
+        <input type="text" placeholder="Buscar...">
+        <button>PESQUISAR</button>
+    </div>
+
+    <div class="header-actions">
+        <a href="carrinho.php">CARRINHO</a>
+    </div>
+</header>
+
+<nav class="navbar">
+    <ul>
+        <li><a href="catalogo.php">Catálogo</a></li>
+        <li><a href="sobre.php">Sobre</a></li>
+    </ul>
+</nav>
+
+<div class="page-container" style="justify-content:center;">
+
+    <div style="width: 380px; border:1px solid #ddd; padding:25px;">
+
+        <h2 style="text-align:center; margin-bottom:18px;">Login</h2>
+
+        <form action="processa_login.php" method="POST" style="display:flex; flex-direction:column; gap:12px;">
+
+            <label for="email">Email:</label>
+            <input type="email" name="email" style="padding:10px; border:1px solid #aaa;">
+
+            <label for="senha">Senha:</label>
+            <input type="password" name="senha" style="padding:10px; border:1px solid #aaa;">
+
+            <button type="submit">Entrar</button>
+        </form>
+
+        <p style="text-align:center; margin-top:14px;">
+            <a href="register.php">Criar conta</a>
+        </p>
+    </div>
+
 </div>
 
-<script src="./bootstrap/js/bootstrap.bundle.min.js"></script>
+<footer class="footer">
+    <h4>Infinity Disks</h4>
+    <p>Todos os direitos reservados.</p>
+</footer>
+
 </body>
 </html>

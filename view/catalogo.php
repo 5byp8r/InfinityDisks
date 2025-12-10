@@ -13,81 +13,88 @@ $produtos = [
 ?>
 
 <!DOCTYPE html>
-<html>
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <title>Catálogo - Infinity Disks</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css">
 </head>
-<body class="bg-light">
+<body>
 
-<div class="container mt-5">
-
-    <div class="card shadow-sm">
-        <div class="card-header bg-dark text-white text-center">
-            <h2>Catálogo de Produtos</h2>
-        </div>
-
-        <div class="card-body">
-
-            <!-- filtro -->
-            <form method="GET" action="catalogo.php" class="mb-4">
-                <label class="form-label fw-bold">Filtrar por categoria:</label>
-                <div class="input-group">
-                    <select name="categoria" class="form-select">
-                        <?php foreach ($categorias as $c): ?>
-                            <option><?= htmlspecialchars($c) ?></option>
-                        <?php endforeach; ?>
-                    </select>
-                    <button type="submit" class="btn btn-primary">Filtrar</button>
-                </div>
-            </form>
-
-            <h4 class="mb-3">Produtos Disponíveis</h4>
-
-            <!-- cards dos produtos -->
-            <div class="row">
-                <?php foreach ($produtos as $p): ?>
-                    <div class="col-md-4 mb-4">
-                        <div class="card h-100 border-secondary">
-                            <div class="card-body">
-
-                                <h5 class="card-title text-primary">
-                                    <strong><?= htmlspecialchars($p['nome']) ?></strong>
-                                </h5>
-
-                                <p class="card-text mb-1">
-                                    <strong>Categoria:</strong> <?= htmlspecialchars($p['categoria']) ?>
-                                </p>
-
-                                <p class="card-text">
-                                    <strong>Preço:</strong>  
-                                    R$ <?= number_format($p['preco'], 2, ",", ".") ?>
-                                </p>
-
-                                <form action="adicionar_carrinho.php" method="POST" class="mt-3">
-                                    <input type="hidden" name="produto_id" value="<?= $p['id'] ?>">
-
-                                    <label class="form-label">Quantidade:</label>
-                                    <input type="number" name="quantidade" value="1" min="1" class="form-control mb-2">
-
-                                    <button type="submit" class="btn btn-success w-100">
-                                        Adicionar ao Carrinho
-                                    </button>
-                                </form>
-
-                            </div>
-                        </div>
-                    </div>
-                <?php endforeach; ?>
-            </div>
-
-        </div>
+<!-- menu de cima -->
+<header class="header-top">
+    <div class="header-logo">
+        <a href="index.php">
+            <b>INFINITY DISKS
+        </a>
     </div>
 
+    <div class="header-search">
+        <input type="text" placeholder="Buscar produtos...">
+        <button>PESQUISAR</button>
+    </div>
+
+    <div class="header-actions">
+        <a href="login.php">LOGIN</a>
+        <a href="carrinho.php">CARRINHO</a>
+    </div>
+</header>
+
+<!-- menu de categoiras -->
+<nav class="navbar">
+    <ul>
+        <?php foreach ($categorias as $c): ?>
+            <li><a href="catalogo.php?categoria=<?= urlencode($c) ?>"><?= htmlspecialchars($c) ?></a></li>
+        <?php endforeach; ?>
+    </ul>
+</nav>
+
+<div class="page-container">
+
+    <!-- sidebart -->
+    <aside class="sidebar">
+        <h3>Categorias</h3>
+        <ul>
+            <?php foreach ($categorias as $c): ?>
+                <li><a href="catalogo.php?categoria=<?= urlencode($c) ?>"><?= htmlspecialchars($c) ?></a></li>
+            <?php endforeach; ?>
+        </ul>
+    </aside>
+
+    <!-- produtos -->
+    <section class="products">
+        
+        <h2>Produtos Disponíveis</h2>
+
+        <div class="products-grid">
+            <?php foreach ($produtos as $p): ?>
+            <div class="product-card">
+
+                <div class="product-name">
+                    <?= htmlspecialchars($p['nome']) ?>
+                </div>
+
+                <p><?= htmlspecialchars($p['categoria']) ?></p>
+
+                <p class="product-price">R$ <?= number_format($p['preco'], 2, ",", ".") ?></p>
+
+                <form action="adicionar_carrinho.php" method="POST">
+                    <input type="hidden" name="produto_id" value="<?= $p['id'] ?>">
+                    <input type="number" name="quantidade" value="1" min="1">
+                    <button type="submit">Comprar</button>
+                </form>
+
+            </div>
+            <?php endforeach; ?>
+        </div>
+
+    </section>
 </div>
 
-<script src="./bootstrap/js/bootstrap.bundle.min.js"></script>
+<footer class="footer">
+    <h4>Infinity Disks</h4>
+    <p>Todos os direitos reservados.</p>
+</footer>
+
 </body>
 </html>

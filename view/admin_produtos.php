@@ -9,54 +9,76 @@ $produtos = [
 ?>
 
 <!DOCTYPE html>
-<html>
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <title>Admin - Produtos</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css">
 </head>
-<body class="bg-light">
+<body>
 
-<div class="container mt-5">
-    <div class="card shadow-sm">
-        
-        <div class="card-header bg-dark text-white text-center">
-            <h3>Produtos Cadastrados</h3>
-        </div>
-
-        <div class="card-body">
-
-            <table class="table table-striped table-bordered table-hover align-middle">
-                <tr class="table-primary text-center">
-                    <th>ID</th>
-                    <th>Nome</th>
-                    <th>Categoria</th>
-                    <th>Preço</th>
-                    <th>Ação</th>
-                </tr>
-
-                <?php foreach ($produtos as $p): ?>
-                    <tr>
-                        <td class="text-center"><?= $p["id"] ?></td>
-                        <td><?= htmlspecialchars($p["nome"]) ?></td>
-                        <td><?= htmlspecialchars($p["categoria"]) ?></td>
-                        <td>R$ <?= number_format($p["preco"], 2, ",", ".") ?></td>
-                        <td class="text-center">
-                            <form action="admin_remover_produto.php" method="POST">
-                                <input type="hidden" name="id" value="<?= $p["id"] ?>">
-                                <button type="submit" class="btn btn-danger btn-sm">Excluir</button>
-                            </form>
-                        </td>
-                    </tr>
-                <?php endforeach; ?>
-
-            </table>
-
-        </div>
+<header class="header-top">
+    <div class="header-logo">
+        <a href="index.php"><b>INFINITY DISKS</b></a>
     </div>
+
+    <div class="header-search">
+        <input type="text" placeholder="Buscar...">
+        <button>PESQUISAR</button>
+    </div>
+
+    <div class="header-actions">
+        <a href="admin_produtos.php">ADMIN</a>
+        <a href="carrinho.php">CARRINHO</a>
+    </div>
+</header>
+
+<div class="page-container">
+
+    <aside class="sidebar">
+        <h3>Painel Admin</h3>
+        <ul>
+            <li><a href="admin_cadastro_produto.php">Cadastrar Produto</a></li>
+            <li><a href="admin_produtos.php">Produtos</a></li>
+        </ul>
+    </aside>
+
+    <section class="products">
+        <h2>Produtos Cadastrados</h2>
+
+        <table class="admin-table">
+            <tr>
+                <th>ID</th>
+                <th>Nome</th>
+                <th>Categoria</th>
+                <th>Preço</th>
+                <th>Ação</th>
+            </tr>
+
+            <?php foreach ($produtos as $p): ?>
+            <tr>
+                <td><?= $p["id"] ?></td>
+                <td><?= htmlspecialchars($p["nome"]) ?></td>
+                <td><?= htmlspecialchars($p["categoria"]) ?></td>
+                <td>R$ <?= number_format($p["preco"], 2, ",", ".") ?></td>
+                <td>
+                    <form action="admin_remover_produto.php" method="POST">
+                        <input type="hidden" name="id" value="<?= $p["id"] ?>">
+                        <button class="delete-btn" type="submit">Excluir</button>
+                    </form>
+                </td>
+            </tr>
+            <?php endforeach; ?>
+        </table>
+
+    </section>
+
 </div>
 
-<script src="./bootstrap/js/bootstrap.bundle.min.js"></script>
+<footer class="footer">
+    <h4>Infinity Disks</h4>
+    <p>Todos os direitos reservados.</p>
+</footer>
+
 </body>
 </html>
