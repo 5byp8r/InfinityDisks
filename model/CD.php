@@ -61,7 +61,7 @@ class CD
     private function insert()
     {
         try {
-            $stmt = $this->conexao->getPDO()->prepare("INSERT INTO cds (descricao, categoria, tipo, musicas, estoque, preco) VALUES (:descricao, :categoria, :tipo, :musicas, :estoque, :preco);");
+            $stmt = self::$conexao->getPDO()->prepare("INSERT INTO cds (descricao, categoria, tipo, musicas, estoque, preco) VALUES (:descricao, :categoria, :tipo, :musicas, :estoque, :preco);");
             $stmt->bindParam(':descricao', $this->descricao);
             $stmt->bindParam(':categoria', $this->categoria);
             $stmt->bindParam(':tipo', $this->tipo);
@@ -71,8 +71,8 @@ class CD
             $stmt->execute();
             
             if ($stmt->rowCount() > 0) {
-                $this->id = $this->conexao->getPDO()->lastInsertId();
-                $this->data_cadastro = self::find($this->conexao->getPDO()->lastInsertId())->getData();
+                $this->id = self::$conexao->getPDO()->lastInsertId();
+                $this->data_cadastro = self::find(self::$conexao->getPDO()->lastInsertId())->getData();
                 return true;
             }
             else {}
@@ -83,7 +83,7 @@ class CD
     private function update()
     {
         try {
-            $stmt = $this->conexao->getPDO()->prepare("UPDATE cds SET descricao = :descricao, categoria = :categoria, tipo = :tipo, musicas = :musicas, estoque = :estoque, preco = :preco WHERE id = :id;");
+            $stmt = self::$conexao->getPDO()->prepare("UPDATE cds SET descricao = :descricao, categoria = :categoria, tipo = :tipo, musicas = :musicas, estoque = :estoque, preco = :preco WHERE id = :id;");
             $stmt->bindParam(':descricao', $this->descricao);
             $stmt->bindParam(':categoria', $this->categoria);
             $stmt->bindParam(':tipo', $this->tipo);
@@ -102,7 +102,7 @@ class CD
     public function delete()
     {
         try {
-            $stmt = $this->conexao->getPDO()->prepare("DELETE FROM cds WHERE id = :id");
+            $stmt = self::$conexao->getPDO()->prepare("DELETE FROM cds WHERE id = :id");
             $stmt->bindParam(':id', $id, PDO::PARAM_INT);
             $stmt->execute();
 

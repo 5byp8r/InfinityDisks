@@ -57,7 +57,7 @@ class Usuario
     private function insert()
     {
         try {
-            $stmt = $this->conexao->getPDO()->prepare("INSERT INTO usuarios (tipo, nome, email, senha) VALUES (:tipo, :nome, :email, :senha);");
+            $stmt = self::$conexao->getPDO()->prepare("INSERT INTO usuarios (tipo, nome, email, senha) VALUES (:tipo, :nome, :email, :senha);");
             $stmt->bindParam(':tipo', $this->tipo);
             $stmt->bindParam(':nome', $this->nome);
             $stmt->bindParam(':email', $this->email);
@@ -65,8 +65,8 @@ class Usuario
             $stmt->execute();
             
             if ($stmt->rowCount() > 0) {
-                $this->id = $this->conexao->getPDO()->lastInsertId();
-                $this->data_criacao = self::find($this->conexao->getPDO()->lastInsertId())->getDataCriacao();
+                $this->id = self::$conexao->getPDO()->lastInsertId();
+                $this->data_criacao = self::find(self::$conexao->getPDO()->lastInsertId())->getDataCriacao();
                 return true;
             }
             else {}
@@ -77,7 +77,7 @@ class Usuario
     private function update()
     {
         try {
-            $stmt = $this->conexao->getPDO()->prepare("UPDATE usuarios SET tipo = :tipo, nome = :nome, email = :email, senha = :senha WHERE id = :id;");
+            $stmt = self::$conexao->getPDO()->prepare("UPDATE usuarios SET tipo = :tipo, nome = :nome, email = :email, senha = :senha WHERE id = :id;");
             $stmt->bindParam(':tipo', $this->tipo);
             $stmt->bindParam(':nome', $this->nome);
             $stmt->bindParam(':email', $this->email);
@@ -94,7 +94,7 @@ class Usuario
     public function delete()
     {
         try {
-            $stmt = $this->conexao->getPDO()->prepare("DELETE FROM usuarios WHERE id = :id");
+            $stmt = self::$conexao->getPDO()->prepare("DELETE FROM usuarios WHERE id = :id");
             $stmt->bindParam(':id', $id, PDO::PARAM_INT);
             $stmt->execute();
 

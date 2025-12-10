@@ -50,7 +50,7 @@ class Venda {
 
             while ($linha = $stmt->fetch(PDO::FETCH_ASSOC)) {
 				if ($user = Usuario::find($linha['id_user'])) {
-					$usuario = new Venda($user, $linha['itens'], $linha['id'], $linha['data_venda']);
+					$usuario = new Venda($user, ItemVenda::getAll($linha['id']), $linha['id'], $linha['data_venda']);
 					$result[] = $usuario;
 				}
             }
@@ -69,7 +69,7 @@ class Venda {
 
             if ($linha = $stmt->fetch(PDO::FETCH_ASSOC))
 				if ($user = Usuario::find($linha['id_user']))
-					return new Venda($user, $linha['itens'], $linha['id'], $linha['data_venda']);
+					return new Venda($user, ItemVenda::getAll($linha['id']), $linha['id'], $linha['data_venda']);
         } catch (\Throwable $th) {}
         return false;
     }
@@ -85,15 +85,18 @@ class Venda {
     private function insert()
     {
         try {
-            $stmt = $this->conexao->getPDO()->prepare("INSERT INTO vendas (valor_venda, id_user, itens) VALUES (:valor_venda, :id_user, :itens);");
+            $stmt = self::$conexao->getPDO()->prepare("INSERT INTO vendas (valor_venda, id_user) VALUES (:valor_venda, :id_user);");
             $stmt->bindParam(':valor_venda', $this->valor_venda);
-			$stmt->bindParam(':id_user', $this->usuario->getId(), PDO::PARAM_INT);
-            $stmt->bindParam(':itens', $this->itens);
+            $id_user = $this->usuario->getId();
+			$stmt->bindParam(':id_user', $id_user, PDO::PARAM_INT);
             $stmt->execute();
             
             if ($stmt->rowCount() > 0) {
-                $this->id = $this->conexao->getPDO()->lastInsertId();
-                $this->data_criacao = self::find($this->conexao->getPDO()->lastInsertId())->getDataCriacao();
+                $this->id = self::$conexao->getPDO()->lastInsertId();
+                $this->data_criacao = self::find($this->id)->getDataVenda();
+                foreach ($this->itens as $item) {
+                    if (!$item->save()) return false;
+                }
                 return true;
             }
             else {}
@@ -104,14 +107,19 @@ class Venda {
     private function update()
     {
         try {
-            $stmt = $this->conexao->getPDO()->prepare("UPDATE vendas SET (valor_venda = :valor_venda, id_user = :id_user, itens = :itens WHERE id = :id;");
+            $stmt = self::$conexao->getPDO()->prepare("UPDATE vendas SET (valor_venda = :valor_venda, id_user = :id_user WHERE id = :id;");
             $stmt->bindParam(':valor_venda', $this->valor_venda);
-			$stmt->bindParam(':id_user', $this->usuario->getId(), PDO::PARAM_INT);
-            $stmt->bindParam(':itens', $this->itens);
+            $id_user = $this->usuario->getId();
+			$stmt->bindParam(':id_user', $id_user, PDO::PARAM_INT);
             $stmt->bindParam(':id', $this->id, PDO::PARAM_INT);
             $stmt->execute();
             
-            if ($stmt->rowCount() > 0) return true;
+            if ($stmt->rowCount() > 0) {
+                foreach ($this->itens as $item) {
+                    if (!$item->save()) return false;
+                }
+                return true;
+            }
             else {}
         } catch (PDOException $th) {}
         return false;
@@ -120,7 +128,10 @@ class Venda {
     public function delete()
     {
         try {
-            $stmt = $this->conexao->getPDO()->prepare("DELETE FROM vendas WHERE id = :id");
+            foreach ($this->itens as $item) {
+                if (!$item->delete()) return false;
+            }
+            $stmt = self::$conexao->getPDO()->prepare("DELETE FROM vendas WHERE id = :id");
             $stmt->bindParam(':id', $id, PDO::PARAM_INT);
             $stmt->execute();
 
