@@ -1,7 +1,7 @@
 <?php // conexao.php - conexão com o banco (PDO)
-class Conexao
+class ConexaoBD
 {
-    private static Conexao $conexao;
+    private static ConexaoBD $conexao;
     private $host = 'localhost';
     private $dbname = 'db_web_loja';
     private $username = 'root';
@@ -14,7 +14,7 @@ class Conexao
 
     public static function getInstance(){
         if(!isset(self::$conexao)){
-            self::$conexao = new Conexao();
+            self::$conexao = new ConexaoBD();
         }
         return self::$conexao;
     }
