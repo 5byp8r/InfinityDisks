@@ -25,23 +25,22 @@ CREATE TABLE IF NOT EXISTS usuarios (
     data_criacao DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- CREATE TABLE IF NOT EXISTS vendas (
---     id INT AUTO_INCREMENT PRIMARY KEY,
---     tipo ENUM('user','admin') NOT NULL DEFAULT 'user',
---     nome VARCHAR(150) NOT NULL,
---     email VARCHAR(150) NOT NULL UNIQUE,
---     senha VARCHAR(255) NOT NULL,
---     data_criacao DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
--- ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+CREATE TABLE IF NOT EXISTS vendas (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    data_venda DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    valor_venda DECIMAL(10,2) NOT NULL DEFAULT 0.00,
+    id_user INT NOT NULL,
+    FOREIGN KEY (id_user) REFERENCES usuarios(id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- CREATE TABLE IF NOT EXISTS itemVendas (
---     id INT AUTO_INCREMENT PRIMARY KEY,
---     tipo ENUM('user','admin') NOT NULL DEFAULT 'user',
---     nome VARCHAR(150) NOT NULL,
---     email VARCHAR(150) NOT NULL UNIQUE,
---     senha VARCHAR(255) NOT NULL,
---     data_criacao DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
--- ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+CREATE TABLE IF NOT EXISTS itensVenda (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    estoque INT NOT NULL DEFAULT 0,
+    id_cd INT NOT NULL,
+    id_venda INT NOT NULL,
+    FOREIGN KEY (id_venda) REFERENCES vendas(id),
+    FOREIGN KEY (id_cd) REFERENCES cds(id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- (Opcional) inserção de exemplo
 INSERT INTO cds (descricao, categoria, tipo, musicas, estoque, preco)
