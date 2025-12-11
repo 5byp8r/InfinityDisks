@@ -19,7 +19,7 @@ $compras = [
 
 <header class="header-top">
     <div class="header-logo">
-        <a href="home.php"><b>INFINITY DISKS</b></a>
+        <a href="../view/home.php"><b>INFINITY DISKS</b></a>
     </div>
 
     <div class="header-search">
@@ -28,18 +28,18 @@ $compras = [
     </div>
     <div></div>
     <div class="header-actions">
-        <a class="lo.ca" href="login.php">LOGIN</a>
-        <a class="lo.ca" href="carrinho.php">CARRINHO</a>
+        <a class="lo.ca" href="../view/login.php">LOGIN</a>
+        <a class="lo.ca" href="../view/carrinho.php">CARRINHO</a>
     </div>
 </header>
 
 <nav class="navbar">
     <ul>
-        <li><a href="catalogo.php">Catálogo</a></li>
-        <li><a href="admin_cadastro_produto.php">Cadastrar Produto</a></li>
-        <li><a href="admin_produtos.php">Produtos</a></li>
-        <li><a href="admin_vendas.php">Vendas</a></li>
-        <li><a href="sobre.php">Sobre</a></li>
+        <li><a href="../view/catalogo.php">Catálogo</a></li>
+        <li><a href="../view/admin_cadastro_produto.php">Cadastrar Produto</a></li>
+        <li><a href="../view/admin_produtos.php">Produtos</a></li>
+        <li><a href="../view/admin_vendas.php">Vendas</a></li>
+        <li><a href="../view/sobre.php">Sobre</a></li>
     </ul>
 </nav>
 
@@ -48,8 +48,8 @@ $compras = [
     <aside class="sidebar">
         <h3>Minha Conta</h3>
         <ul>
-            <li><a href="catalogo.php">Continuar Comprando</a></li>
-            <li><a href="logout.php">Sair</a></li>
+            <li><a href="../view/catalogo.php">Continuar Comprando</a></li>
+            <li><a href="../view/logout.php">Sair</a></li>
         </ul>
     </aside>
 

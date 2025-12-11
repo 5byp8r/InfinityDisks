@@ -9,7 +9,7 @@
 
 <header class="header-top">
     <div class="header-logo">
-        <a href="home.php"><b>INFINITY DISKS</b></a>
+        <a href="../view/home.php"><b>INFINITY DISKS</b></a>
     </div>
 
     <div class="header-search">
@@ -18,18 +18,18 @@
     </div>
     <div></div>
     <div class="header-actions">
-        <a class="lo.ca" href="login.php">LOGIN</a>
-        <a class="lo.ca" href="carrinho.php">CARRINHO</a>
+        <a class="lo.ca" href="../view/login.php">LOGIN</a>
+        <a class="lo.ca" href="../view/carrinho.php">CARRINHO</a>
     </div>
 </header>
 
 <nav class="navbar">
     <ul>
-        <li><a href="catalogo.php">Catálogo</a></li>
-        <li><a href="admin_cadastro_produto.php">Cadastrar Produto</a></li>
-        <li><a href="admin_produtos.php">Produtos</a></li>
-        <li><a href="admin_vendas.php">Vendas</a></li>
-        <li><a href="sobre.php">Sobre</a></li>
+        <li><a href="../view/catalogo.php">Catálogo</a></li>
+        <li><a href="../view/admin_cadastro_produto.php">Cadastrar Produto</a></li>
+        <li><a href="../view/admin_produtos.php">Produtos</a></li>
+        <li><a href="../view/admin_vendas.php">Vendas</a></li>
+        <li><a href="../view/sobre.php">Sobre</a></li>
     </ul>
 </nav>
 
@@ -38,8 +38,8 @@
     <aside class="sidebar">
         <h3>Informações</h3>
         <ul>
-            <li><a href="catalogo.php">Ir ao Catálogo</a></li>
-            <li><a href="home.php">Voltar à Home</a></li>
+            <li><a href="../view/catalogo.php">Ir ao Catálogo</a></li>
+            <li><a href="../view/home.php">Voltar à Home</a></li>
         </ul>
     </aside>
 

@@ -19,7 +19,7 @@ $vendas = [
 
 <header class="header-top">
     <div class="header-logo">
-        <a href="home.php"><b>INFINITY DISKS</b></a>
+        <a href="../view/home.php"><b>INFINITY DISKS</b></a>
     </div>
 
     <div class="header-search">
@@ -28,18 +28,18 @@ $vendas = [
     </div>
     <div></div>
     <div class="header-actions">
-        <a class="lo.ca" href="login.php">LOGIN</a>
-        <a class="lo.ca" href="carrinho.php">CARRINHO</a>
+        <a class="lo.ca" href="../view/login.php">LOGIN</a>
+        <a class="lo.ca" href="../view/carrinho.php">CARRINHO</a>
     </div>
 </header>
 
 <nav class="navbar">
     <ul>
-        <li><a href="catalogo.php">Catálogo</a></li>
-        <li><a href="admin_cadastro_produto.php">Cadastrar Produto</a></li>
-        <li><a href="admin_produtos.php">Produtos</a></li>
-        <li><a href="admin_vendas.php">Vendas</a></li>
-        <li><a href="sobre.php">Sobre</a></li>
+        <li><a href="../view/catalogo.php">Catálogo</a></li>
+        <li><a href="../view/admin_cadastro_produto.php">Cadastrar Produto</a></li>
+        <li><a href="../view/admin_produtos.php">Produtos</a></li>
+        <li><a href="../view/admin_vendas.php">Vendas</a></li>
+        <li><a href="../view/sobre.php">Sobre</a></li>
     </ul>
 </nav>
 
@@ -48,9 +48,9 @@ $vendas = [
     <aside class="sidebar">
         <h3>Painel Admin</h3>
         <ul>
-            <li><a href="admin_cadastro_produto.php">Cadastrar Produto</a></li>
-            <li><a href="admin_produtos.php">Produtos</a></li>
-            <li><a href="admin_vendas.php">Vendas</a></li>
+            <li><a href="../view/admin_cadastro_produto.php">Cadastrar Produto</a></li>
+            <li><a href="../view/admin_produtos.php">Produtos</a></li>
+            <li><a href="../view/admin_vendas.php">Vendas</a></li>
         </ul>
     </aside>
 
@@ -58,7 +58,7 @@ $vendas = [
         <h2>💰 Vendas Realizadas</h2>
         <br>
 
-        <form method="GET" action="admin_vendas.php" style="display: flex; gap: 15px; margin-bottom: 20px; flex-wrap: wrap;">
+        <form method="GET" action="../view/admin_vendas.php" style="display: flex; gap: 15px; margin-bottom: 20px; flex-wrap: wrap;">
             <div>
                 <label style="display: block; margin-bottom: 8px; font-weight: 600;">Data Inicial:</label>
                 <input type="date" name="data_inicio" style="padding: 8px; border-radius: 4px; border: 1px solid #ddd;">
