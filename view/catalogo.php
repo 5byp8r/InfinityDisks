@@ -46,15 +46,13 @@ if (isset($_GET['categoria']) && $_GET['categoria'] !== "Todos") {
         </div>
     </header>
 
-    <nav class="navbar">
+   <nav class="navbar">
         <ul>
-            <?php foreach ($categorias as $c): ?>
-                <li>
-                    <a href="../view/catalogo.php?categoria=<?= urlencode($c) ?>">
-                        <?= htmlspecialchars($c) ?>
-                    </a>
-                </li>
-            <?php endforeach; ?>
+            <li><a href="../view/catalogo.php">Catálogo</a></li>
+            <li><a href="../view/admin_cadastro_produto.php">Cadastrar Produto</a></li>
+            <li><a href="../view/admin_produtos.php">Produtos</a></li>
+            <li><a href="../view/admin_vendas.php">Vendas</a></li>
+            <li><a href="../view/sobre.php">Sobre</a></li>
         </ul>
     </nav>
 

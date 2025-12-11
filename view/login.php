@@ -54,7 +54,7 @@ if (session_status() === PHP_SESSION_NONE) {
             <h2>🔐 Login</h2>
             <br>
 
-            <div style="max-width: 450px; margin: 0 auto;">
+            <div style="max-width: 450px; margin: 0 auto; text-align: center;">
                 <form action="../Controller/controller.php" method="POST"
                     style="display:flex; flex-direction:column; gap:15px;">
                     <input type="hidden" name="action" value="login">
@@ -67,7 +67,6 @@ if (session_status() === PHP_SESSION_NONE) {
                         <label for="senha" style="display: block; margin-bottom: 8px; font-weight: 600;">Senha:</label>
                         <input type="password" id="senha" name="senha" class="form-control-admin" required>
                     </div>
-
                     <button type="submit" class="btn-primary" style="padding: 12px; font-size: 1rem;">Entrar</button>
                 </form>
 
