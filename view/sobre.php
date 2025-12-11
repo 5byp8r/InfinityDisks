@@ -63,7 +63,7 @@
             <div style="border: 1px solid #ddd; padding: 20px; border-radius: 8px;">
                 <h3 style="color: #e91e63; margin-bottom: 15px;">🎨 Nossa Identidade</h3>
                 <p><strong>Estilo:</strong> Moderno e acessível</p>
-                <p><strong>Paleta de cores:</strong> Diversificada e vibrante</p>
+                <p><strong>Paleta de cores:</strong> Selecionada afim de facilitar a visualização e gerar familiaridade com a aplicação.</p>
             </div>
         </div>
     </section>
@@ -71,7 +71,7 @@
 </div>
 
 <footer class="footer">
-    <h4>Infinity Disks</h4>
+    <h4>Infinity Disks - Provendo vibes inesgotáveis.</h4>
     <p>Todos os direitos reservados.</p>
 </footer>
 
