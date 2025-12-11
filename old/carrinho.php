@@ -1,16 +1,12 @@
 <?php
 if (session_status() === PHP_SESSION_NONE) session_start();
-require_once 'Model/conexao.php';
 
-$mensagens = $_SESSION['mensagem'] ?? [];
-$tipo_mensagem = $_SESSION['tipo_mensagem'] ?? '';
-unset($_SESSION['mensagem'], $_SESSION['tipo_mensagem']);
+$venda = $_SESSION['venda_atual'] ?? null;
+$mensagem = $_SESSION['erro'] ?? $_SESSION['sucesso'] ?? '';
+unset($_SESSION['erro'], $_SESSION['sucesso']);
 
-$cart = $_SESSION['cart'] ?? [];
-$total = 0.00;
-foreach ($cart as $item) {
-    $total += $item['qty'] * floatval($item['preco']);
-}
+$itens = $venda ? $venda->getItens() : [];
+$total = $venda ? $venda->getValorVenda() : 0.00;
 ?>
 
 <!DOCTYPE html>
@@ -24,42 +20,62 @@ foreach ($cart as $item) {
 <body>
 <header class="topo">
     <h1>Carrinho</h1>
-    <nav><a href="tela_produtos.php">Continuar comprando</a></nav>
+    <nav><a href="catalogo.php">Continuar comprando</a></nav>
 </header>
 
 <main class="container">
-    <?php if ($mensagens): ?>
-        <div class="alert <?= htmlspecialchars($tipo_mensagem ?: 'info') ?>">
-            <ul><?php foreach ($mensagens as $m): ?><li><?= htmlspecialchars($m) ?></li><?php endforeach; ?></ul>
+
+    <?php if ($mensagem): ?>
+        <div class="alert">
+            <?= htmlspecialchars($mensagem) ?>
         </div>
     <?php endif; ?>
 
-    <?php if ($cart): ?>
+    <?php if ($venda && $itens): ?>
         <table class="table-cart">
-            <thead><tr><th>Produto</th><th>Qtd</th><th>Preço unit.</th><th>Subtotal</th><th>Ações</th></tr></thead>
+            <thead>
+            <tr>
+                <th>Produto</th>
+                <th>Qtd</th>
+                <th>Preço unit.</th>
+                <th>Subtotal</th>
+                <th>Ações</th>
+            </tr>
+            </thead>
+
             <tbody>
-                <?php foreach ($cart as $id => $item): ?>
-                    <tr>
-                        <td><?= htmlspecialchars($item['descricao']) ?></td>
-                        <td><?= (int)$item['qty'] ?></td>
-                        <td>R$ <?= number_format($item['preco'], 2, ',', '.') ?></td>
-                        <td>R$ <?= number_format($item['qty'] * $item['preco'], 2, ',', '.') ?></td>
-                        <td><a href="remover_carrinho.php?id=<?= (int)$id ?>" onclick="return confirm('Remover item?')">Remover</a></td>
-                    </tr>
-                <?php endforeach; ?>
+            <?php foreach ($itens as $index => $item): ?>
+                <tr>
+                    <td><?= htmlspecialchars($item->getCd()->getDescricao()) ?></td>
+                    <td><?= (int)$item->getQuantidade() ?></td>
+                    <td>R$ <?= number_format($item->getCd()->getPreco(), 2, ',', '.') ?></td>
+                    <td>R$ <?= number_format($item->getCd()->getPreco() * $item->getQuantidade(), 2, ',', '.') ?></td>
+                    <td>
+                        <form action="../Controller/controller.php?action=removerItemVenda" method="POST">
+                            <input type="hidden" name="index" value="<?= $index ?>">
+                            <button type="submit">Remover</button>
+                        </form>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
             </tbody>
         </table>
 
         <p class="total">Total: R$ <?= number_format($total, 2, ',', '.') ?></p>
 
-        <form action="finalizar_pedido.php" method="POST">
-            <button type="submit">Finalizar compra (simulado)</button>
+        <form action="../Controller/controller.php?action=finalizarVenda" method="POST">
+            <button type="submit">Finalizar compra</button>
         </form>
+
     <?php else: ?>
         <p>Seu carrinho está vazio.</p>
     <?php endif; ?>
+
 </main>
 
-<footer class="rodape"><p>Loja de Discos — protótipo</p></footer>
+<footer class="rodape">
+    <p>Loja de Discos — protótipo</p>
+</footer>
+
 </body>
 </html>

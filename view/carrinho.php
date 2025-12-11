@@ -1,95 +1,113 @@
 <?php
+require_once "../Model/Usuario.php";
+require_once "../Model/CD.php";
+require_once "../Model/ItemVenda.php";
+require_once "../Model/Venda.php";
+
 session_start();
 
-// carrinho placeholder
-$carrinho = [
-    ["id" => 1, "nome" => "live and learn - crush 40", "preco" => 120.00, "quantidade" => 2],
-    ["id" => 2, "nome" => "billie jean - michael jackson", "preco" => 9.90, "quantidade" => 1],
-];
+
+$venda = isset($_SESSION['venda_atual']) ? $_SESSION['venda_atual'] : null;
+
+$itens = $venda ? $venda->getItens() : [];
 
 $total = 0;
-foreach ($carrinho as $item) {
-    $total += $item["preco"] * $item["quantidade"];
+foreach ($itens as $item) {
+    $total += $item->getCd()->getPreco() * $item->getQuantidade();
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <title>Carrinho - Infinity Disks</title>
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
-<header class="header-top">
-    <div class="header-logo">
-        <a href="index.php"><b>INFINITY DISKS</b></a>
-    </div>
+    <header class="header-top">
+        <div class="header-logo">
+            <a href="../view/home.php"><b>INFINITY DISKS</b></a>
+        </div>
 
-    <div class="header-search">
-        <input class="barra"type="text" placeholder="Buscar...">
-        <button class="pesquisa"><img class="image" src="procurar.svg" alt="Pesquisar"></button>
-    </div>
-    <div></div>
-    <div class="header-actions">
-        <a class="lo.ca" href="login.php">LOGIN</a>
-        <a class="lo.ca" href="carrinho.php">CARRINHO</a>
-    </div>
-</header>
+        <div class="header-search">
+            <input class="barra" type="text" placeholder="Buscar...">
+            <button class="pesquisa"><img class="image" src="procurar.svg" alt="Pesquisar"></button>
+        </div>
 
-<nav class="navbar">
-    <ul>
-        <li><a href="catalogo.php">Catálogo</a></li>
-        <li><a href="admin_cadastro_produto.php">Cadastrar Produto</a></li>
-        <li><a href="admin_produtos.php">Produtos</a></li>
-        <li><a href="admin_vendas.php">Vendas</a></li>
-        <li><a href="sobre.php">Sobre</a></li>
-    </ul>
-</nav>
+        <div class="header-actions">
+            <a class="lo.ca" href="../view/login.php">LOGIN</a>
+            <a class="lo.ca" href="../view/carrinho.php">CARRINHO</a>
+        </div>
+    </header>
 
-<div class="page-container">
-
-    <aside class="sidebar">
-        <h3>Opções</h3>
+    <nav class="navbar">
         <ul>
-            <li><a href="catalogo.php">Continuar Comprando</a></li>
+            <li><a href="../view/catalogo.php">Catálogo</a></li>
+            <li><a href="../view/admin_cadastro_produto.php">Cadastrar Produto</a></li>
+            <li><a href="../view/admin_produtos.php">Produtos</a></li>
+            <li><a href="../view/admin_vendas.php">Vendas</a></li>
+            <li><a href="../view/sobre.php">Sobre</a></li>
         </ul>
-    </aside>
+    </nav>
 
-    <!-- itens do carrinho -->
-    <section class="products">
-        <h2>Seu Carrinho</h2>
-        <br>
+    <div class="page-container">
 
-        <?php foreach ($carrinho as $item): ?>
-            <div style="border:1px solid #ccc; padding:12px; margin-bottom:10px;">
-                <p><strong><?= htmlspecialchars($item["nome"]) ?></strong></p>
-                <p>Quantidade: <?= $item["quantidade"] ?></p>
-                <p>Preço Unitário: R$ <?= number_format($item["preco"], 2, ",", ".") ?></p>
+        <aside class="sidebar">
+            <h3>Opções</h3>
+            <ul>
+                <li><a href="../view/catalogo.php">Continuar Comprando</a></li>
+            </ul>
+        </aside>
 
-                <form action="remover_item.php" method="POST">
-                    <input type="hidden" name="produto_id" value="<?= $item["id"] ?>">
-                    <button>Remover</button>
+        <section class="products">
+            <h2>Seu Carrinho</h2>
+            <br>
+
+            <?php if (!$venda || count($itens) == 0): ?>
+                <p>Nenhum item no carrinho.</p>
+
+            <?php else: ?>
+
+                <?php foreach ($itens as $index => $item): ?>
+                    <div style="border:1px solid #ccc; padding:12px; margin-bottom:10px;">
+                        <p><strong><?= htmlspecialchars($item->getCd()->getDescricao()) ?></strong></p>
+
+                        <p>Quantidade: <?= $item->getQuantidade() ?></p>
+
+                        <p>Preço unitário:
+                            R$ <?= number_format($item->getCd()->getPreco(), 2, ",", ".") ?>
+                        </p>
+
+                        <form action="../Controller/controller.php?action=removerItemVenda" method="POST">
+                            <input type="hidden" name="index" value="<?= $index ?>">
+                            <button>Remover</button>
+                        </form>
+                    </div>
+                <?php endforeach; ?>
+
+                <h3 style="text-align:right; margin-top:20px;">
+                    Total: R$ <?= number_format($total, 2, ",", ".") ?>
+                </h3>
+
+                <form action="../Controller/controller.php?action=finalizarVenda" method="POST"
+                    style="text-align:right; margin-top:10px;">
+                    <button>Confirmar Compra</button>
                 </form>
-            </div>
-        <?php endforeach; ?>
 
-        <h3 style="text-align:right; margin-top:20px;">
-            Total: R$ <?= number_format($total, 2, ",", ".") ?>
-        </h3>
+            <?php endif; ?>
 
-        <form action="confirmar_compra.php" method="POST" style="text-align:right; margin-top:10px;">
-            <button>Confirmar Compra</button>
-        </form>
-    </section>
+        </section>
 
-</div>
+    </div>
 
-<footer class="footer">
-    <h4>Infinity Disks</h4>
-    <p>Todos os direitos reservados.</p>
-</footer>
+    <footer class="footer">
+        <h4>Infinity Disks</h4>
+        <p>Todos os direitos reservados.</p>
+    </footer>
 
 </body>
+
 </html>
