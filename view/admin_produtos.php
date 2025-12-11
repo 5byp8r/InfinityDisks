@@ -1,7 +1,5 @@
 <?php
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
+session_start();
 
 // produtos fake
 $produtos = [
@@ -11,54 +9,90 @@ $produtos = [
 ?>
 
 <!DOCTYPE html>
-<html>
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <title>Admin - Produtos</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css">
 </head>
-<body class="bg-light">
+<body>
 
-<div class="container mt-5">
-    <div class="card shadow-sm">
-        
-        <div class="card-header bg-dark text-white text-center">
-            <h3>Produtos Cadastrados</h3>
-        </div>
-
-        <div class="card-body">
-
-            <table class="table table-striped table-bordered table-hover align-middle">
-                <tr class="table-primary text-center">
-                    <th>ID</th>
-                    <th>Nome</th>
-                    <th>Categoria</th>
-                    <th>Preço</th>
-                    <th>Ação</th>
-                </tr>
-
-                <?php foreach ($produtos as $p): ?>
-                    <tr>
-                        <td class="text-center"><?= $p["id"] ?></td>
-                        <td><?= htmlspecialchars($p["nome"]) ?></td>
-                        <td><?= htmlspecialchars($p["categoria"]) ?></td>
-                        <td>R$ <?= number_format($p["preco"], 2, ",", ".") ?></td>
-                        <td class="text-center">
-                            <form action="view/admin_remover_produto.php" method="POST">
-                                <input type="hidden" name="id" value="<?= $p["id"] ?>">
-                                <button type="submit" class="btn btn-danger btn-sm">Excluir</button>
-                            </form>
-                        </td>
-                    </tr>
-                <?php endforeach; ?>
-
-            </table>
-
-        </div>
+<header class="header-top">
+    <div class="header-logo">
+        <a href="home.php"><b>INFINITY DISKS</b></a>
     </div>
+
+    <div class="header-search">
+        <input class="barra" type="text" placeholder="Buscar...">
+        <button class="pesquisa"><img class="image" src="procurar.svg" alt="Pesquisar"></button>
+    </div>
+    <div></div>
+    <div class="header-actions">
+        <a class="lo.ca" href="login.php">LOGIN</a>
+        <a class="lo.ca" href="carrinho.php">CARRINHO</a>
+    </div>
+</header>
+
+<nav class="navbar">
+    <ul>
+        <li><a href="catalogo.php">Catálogo</a></li>
+        <li><a href="admin_cadastro_produto.php">Cadastrar Produto</a></li>
+        <li><a href="admin_produtos.php">Produtos</a></li>
+        <li><a href="admin_vendas.php">Vendas</a></li>
+        <li><a href="sobre.php">Sobre</a></li>
+    </ul>
+</nav>
+
+<div class="page-container">
+
+    <aside class="sidebar">
+        <h3>Painel Admin</h3>
+        <ul>
+            <li><a href="admin_cadastro_produto.php">Cadastrar Produto</a></li>
+            <li><a href="admin_produtos.php">Produtos</a></li>
+            <li><a href="admin_vendas.php">Vendas</a></li>
+        </ul>
+    </aside>
+
+    <section class="products">
+        <h2>⚠️ Produtos Cadastrados</h2>
+        <br>
+
+        <table style="width:100%; border-collapse: collapse;">
+            <thead style="background-color: #0e0c18; color: #fff;">
+                <tr>
+                    <th style="padding:12px; text-align:left; border-bottom: 2px solid #ddd;">ID</th>
+                    <th style="padding:12px; text-align:left; border-bottom: 2px solid #ddd;">Nome</th>
+                    <th style="padding:12px; text-align:left; border-bottom: 2px solid #ddd;">Categoria</th>
+                    <th style="padding:12px; text-align:left; border-bottom: 2px solid #ddd;">Preço</th>
+                    <th style="padding:12px; text-align:center; border-bottom: 2px solid #ddd;">Ação</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($produtos as $p): ?>
+                <tr style="border-bottom: 1px solid #ddd; transition: background 0.3s ease;" onmouseover="this.style.background='#f9f9f9'" onmouseout="this.style.background='white'">
+                    <td style="padding:12px;">#<?= htmlspecialchars($p["id"]) ?></td>
+                    <td style="padding:12px;"><?= htmlspecialchars($p["nome"]) ?></td>
+                    <td style="padding:12px;"><?= htmlspecialchars($p["categoria"]) ?></td>
+                    <td style="padding:12px; font-weight: bold; color: #e91e63;">R$ <?= number_format($p["preco"], 2, ",", ".") ?></td>
+                    <td style="padding:12px; text-align:center;">
+                        <form action="remover_produto.php" method="POST" style="display: inline;">
+                            <input type="hidden" name="id" value="<?= $p["id"] ?>">
+                            <button type="submit" style="background: #dc3545; color: white; padding: 6px 12px; border: none; border-radius: 4px; cursor: pointer;">Excluir</button>
+                        </form>
+                    </td>
+                </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+    </section>
+
 </div>
 
-<script src="./bootstrap/js/bootstrap.bundle.min.js"></script>
+<footer class="footer">
+    <h4>Infinity Disks</h4>
+    <p>Todos os direitos reservados.</p>
+</footer>
+
 </body>
 </html>
