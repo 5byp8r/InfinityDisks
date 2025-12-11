@@ -1,11 +1,6 @@
 <?php
 session_start();
 
-// vendas fake
-$vendas = [
-    ["id" => 1001, "cliente_id" => 8, "data" => "2008-06-23", "total" => 180.00],
-    ["id" => 1002, "cliente_id" => 12, "data" => "1991-06-23", "total" => 320.00],
-];
 ?>
 
 <!DOCTYPE html>

@@ -217,6 +217,20 @@ if ($acao == "cadastrar") {
     header("Location: ../view/lista_vendas.php");
     exit;
 
+} else if ($acao == "deletarCD") {
+
+    $id = intval($_POST['id']);
+
+    $cd = CD::find($id);
+
+    if ($cd && $cd->delete()) {
+        $_SESSION['sucesso'] = "Produto removido com sucesso.";
+    } else {
+        $_SESSION['erro'] = "Erro ao remover o produto.";
+    }
+
+    header("Location: ../view/admin_produtos.php");
+    exit;
 } else {
     echo "Nenhuma ação válida foi enviada para o controller.";
 }

@@ -43,8 +43,19 @@ if (isset($_GET['categoria']) && $_GET['categoria'] !== "Todos") {
         <div class="header-actions">
             <a class="lo.ca" href="../view/login.php">LOGIN</a>
             <a class="lo.ca" href="../view/carrinho.php">CARRINHO</a>
+            
         </div>
     </header>
+    
+        <!-- Banner centralizado com ecos -->
+        <div class="banner-wrapper">
+            <img class="banner-echo echo1" src="imgBanner.png" alt="eco">
+            <img class="banner-echo echo2" src="imgBanner.png" alt="eco">
+            <img class="banner-echo echo3" src="imgBanner.png" alt="eco">
+            <img class="banner-echo echo4" src="imgBanner.png" alt="eco">
+            <img class="banner-echo echo5" src="imgBanner.png" alt="eco">
+            <img class="banner-main" src="imgBanner.png" alt="Banner Infinity Disks">
+        </div>
 
    <nav class="navbar">
         <ul>
@@ -87,7 +98,7 @@ if (isset($_GET['categoria']) && $_GET['categoria'] !== "Todos") {
                             <div class="product-name">
                                 <?= htmlspecialchars($p->getDescricao()) ?>
                             </div>
-
+<img class="disc" src="disc_icon.png" alt="">
                             <p><strong>Categoria:</strong> <?= htmlspecialchars($p->getCategoria()) ?></p>
 
                             <p class="product-price">
