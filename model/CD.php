@@ -1,13 +1,16 @@
 <?php
+require_once "ConexaoBD.php";
+require_once "ItemVenda.php";
 
 class CD
 {
-    private int $id, $estoque, $data_cadastro;
+    private int $id, $estoque;
     private string $descricao, $categoria, $tipo, $musicas;
+    private ?string $data_cadastro;
     private float $preco;
     private static ConexaoBD $conexao;
 
-    public function __construct(string $descricao, string $categoria, string $tipo, string $musicas, int $estoque, float $preco, int $id = 0, int $data_cadastro = 0)
+    public function __construct(string $descricao, string $categoria, string $tipo, string $musicas, int $estoque, float $preco, int $id = 0, ?string $data_cadastro = null)
     {
         $this->id = $id;
         $this->descricao = $descricao;
@@ -22,6 +25,7 @@ class CD
 
     public static function getAll()
     {
+        if (!isset(self::$conexao)) self::$conexao = ConexaoBD::getInstance();
         try {
             $stmt = self::$conexao->getPDO()->prepare("SELECT * FROM cds");
             $stmt->execute();
@@ -33,12 +37,13 @@ class CD
             }
 
             return $result;
-        } catch (\Throwable $th) {}
+        } catch (PDOException $th) {}
         return false;
     }
 
     public static function find(int $id)
     {
+        if (!isset(self::$conexao)) self::$conexao = ConexaoBD::getInstance();
         try {
             $stmt = self::$conexao->getPDO()->prepare("SELECT * FROM cds WHERE id = :id");
             $stmt->bindParam(':id', $id, PDO::PARAM_INT);
@@ -46,7 +51,7 @@ class CD
             
             if ($linha = $stmt->fetch(PDO::FETCH_ASSOC)) return new CD($linha['descricao'], $linha['categoria'], $linha['tipo'], $linha['musicas'], $linha['estoque'], $linha['preco'], $linha['id'], $linha['data_cadastro']);
             else {}
-        } catch (\Throwable $th) {}
+        } catch (PDOException $th) {}
         return false;
     }
 
@@ -72,8 +77,10 @@ class CD
             
             if ($stmt->rowCount() > 0) {
                 $this->id = self::$conexao->getPDO()->lastInsertId();
-                $this->data_cadastro = self::find(self::$conexao->getPDO()->lastInsertId())->getData();
-                return true;
+                if (($self = self::find($this->id)) instanceof CD){
+                    $this->data_cadastro = $self->getData();
+                    return true;
+                }
             }
             else {}
         } catch (PDOException $th) {}
@@ -102,13 +109,21 @@ class CD
     public function delete()
     {
         try {
+            if ($itens = ItemVenda::getAll($this->id)){
+                foreach ($itens as $item) {
+                    if (!$item->delete()) return false;
+                }
+            }
             $stmt = self::$conexao->getPDO()->prepare("DELETE FROM cds WHERE id = :id");
-            $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+            $stmt->bindParam(':id', $this->id, PDO::PARAM_INT);
             $stmt->execute();
 
-            if ($stmt->rowCount() > 0) return true;
+            if ($stmt->rowCount() > 0) {
+                $this->id = 0;
+                return true;
+            }
             else {}
-        } catch (\Throwable $th) {}
+        } catch (PDOException $th) {}
         return false;
     }
 

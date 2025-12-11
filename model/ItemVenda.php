@@ -1,39 +1,45 @@
 <?php
+require_once "ConexaoBD.php";
+require_once "CD.php";
 
 class ItemVenda {
-	private int $id, $quantidade;
+	private int $id, $id_venda, $quantidade;
 	private CD $cd;
 	private static ConexaoBD $conexao;
 
-	public function __construct(int $quantidade, CD $cd, int $id = 0) {
+	public function __construct(int $quantidade, CD $cd, int $id_venda = 0, int $id = 0) {
 		$this->id = $id;
+		$this->id_venda = $id_venda;
 		$this->quantidade = $quantidade;
 		$this->cd = $cd;
 		self::$conexao = ConexaoBD::getInstance();
 	}
 
-	public static function getAll(?int $id_venda = null)
+	public static function getAll(?int $id_venda = null, ?int $id_cd = null)
     {
+        if (!isset(self::$conexao)) self::$conexao = ConexaoBD::getInstance();
         try {
-            $stmt = self::$conexao->getPDO()->prepare("SELECT * FROM itensVenda" . is_null($id_venda) ? "" : " WHERE id_venda = :id_venda");
-            if (!is_null($id_venda)) $stmt->bindParam(':id_venda', $id_venda, PDO::PARAM_INT);
+            $stmt = self::$conexao->getPDO()->prepare("SELECT * FROM itensVenda" . (($id_venda === null and $id_cd === null) ? ";" : " WHERE ") . ($id_venda === null ? " " : "id_venda = :id_venda")  . (($id_venda !== null and $id_cd !== null) ? " AND " : " ") . ($id_cd === null ? " " : "id_cd = :id_cd"));
+            if ($id_venda !== null) $stmt->bindParam(':id_venda', $id_venda, PDO::PARAM_INT);
+            if ($id_cd !== null) $stmt->bindParam(':id_cd', $id_cd, PDO::PARAM_INT);
             $stmt->execute();
             $result = [];
 
             while ($linha = $stmt->fetch(PDO::FETCH_ASSOC)) {
 				if ($cd = CD::find($linha['id_cd'])){
-					$usuario = new ItemVenda($linha['quantidade'], $cd, $linha['id']);
-					$result[] = $usuario;
+					$item = new ItemVenda($linha['quantidade'], $cd, $linha['id_venda'], $linha['id']);
+					$result[] = $item;
 				}
             }
 
             return $result;
-        } catch (\Throwable $th) {}
+        } catch (PDOException $th) { echo $th->getMessage(); }
         return false;
     }
 
     public static function find(int $id)
     {
+        if (!isset(self::$conexao)) self::$conexao = ConexaoBD::getInstance();
         try {
             $stmt = self::$conexao->getPDO()->prepare("SELECT * FROM itensVenda WHERE id = :id");
             $stmt->bindParam(':id', $id, PDO::PARAM_INT);
@@ -41,8 +47,8 @@ class ItemVenda {
 
             if ($linha = $stmt->fetch(PDO::FETCH_ASSOC))
 				if ($cd = CD::find($linha['id_cd']))
-					return new ItemVenda($linha['quantidade'], $cd, $linha['id']);
-        } catch (\Throwable $th) {}
+					return new ItemVenda($linha['quantidade'], $cd, $linha['id_venda'], $linha['id']);
+        } catch (PDOException $th) { echo $th->getMessage(); }
         return false;
     }
 
@@ -50,41 +56,43 @@ class ItemVenda {
     {
         if($this->id == 0)
             return $this->insert();
-        else 
+        else if ($this != self::find($this->id))
             return $this->update();
+        else return true;
     }
 
     private function insert()
     {
         try {
-            $stmt = self::$conexao->getPDO()->prepare("INSERT INTO itensVenda (quantidade, id_cd) VALUES (:quantidade, :id_cd);");
-            $stmt->bindParam(':quantidade', $this->quantidade);
+            $stmt = self::$conexao->getPDO()->prepare("INSERT INTO itensVenda (quantidade, id_cd, id_venda) VALUES (:quantidade, :id_cd, :id_venda);");
+            $stmt->bindParam(':quantidade', $this->quantidade, PDO::PARAM_INT);
             $id_cd = $this->cd->getId();
 			$stmt->bindParam(':id_cd', $id_cd, PDO::PARAM_INT);
+			$stmt->bindParam(':id_venda', $this->id_venda, PDO::PARAM_INT);
             $stmt->execute();
             
             if ($stmt->rowCount() > 0) {
                 $this->id = self::$conexao->getPDO()->lastInsertId();
                 return true;
             }
-            else {}
-        } catch (PDOException $th) {}
+        } catch (PDOException $th) { echo $th->getMessage(); }
         return false;
     }
     
     private function update()
     {
         try {
-            $stmt = self::$conexao->getPDO()->prepare("UPDATE itensVenda SET quantidade = :quantidade, id_cd = :id_cd WHERE id = :id;");
-            $stmt->bindParam(':quantidade', $this->quantidade);
+            $stmt = self::$conexao->getPDO()->prepare("UPDATE itensVenda SET quantidade = :quantidade, id_cd = :id_cd, id_venda = :id_venda WHERE id = :id;");
+            $stmt->bindParam(':quantidade', $this->quantidade, PDO::PARAM_INT);
 			$id_cd = $this->cd->getId();
 			$stmt->bindParam(':id_cd', $id_cd, PDO::PARAM_INT);
+			$stmt->bindParam(':id_venda', $this->id_venda, PDO::PARAM_INT);
             $stmt->bindParam(':id', $this->id, PDO::PARAM_INT);
             $stmt->execute();
             
             if ($stmt->rowCount() > 0) return true;
             else {}
-        } catch (PDOException $th) {}
+        } catch (PDOException $th) { echo $th->getMessage(); }
         return false;
     }
 
@@ -92,12 +100,15 @@ class ItemVenda {
     {
         try {
             $stmt = self::$conexao->getPDO()->prepare("DELETE FROM itensVenda WHERE id = :id");
-            $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+            $stmt->bindParam(':id', $this->id, PDO::PARAM_INT);
             $stmt->execute();
 
-            if ($stmt->rowCount() > 0) return true;
+            if ($stmt->rowCount() > 0) {
+                $this->id = 0;
+                return true;
+            }
             else {}
-        } catch (\Throwable $th) {}
+        } catch (PDOException $th) { echo $th->getMessage(); }
         return false;
     }
 
@@ -107,10 +118,12 @@ class ItemVenda {
     }
 
 	public function getId(): int { return $this->id; }
+	public function getIdVenda(): int { return $this->id_venda; }
 	public function getQuantidade(): int { return $this->quantidade; }
 	public function getCd(): CD { return $this->cd; }
 
 	public function setId(int $id) { $this->id = $id; }
+	public function setIdVenda(int $id_venda) { $this->id_venda = $id_venda; }
 	public function setQuantidade(int $quantidade) { $this->quantidade = $quantidade; }
 	public function setCd(CD $cd) { $this->cd = $cd; }
 }

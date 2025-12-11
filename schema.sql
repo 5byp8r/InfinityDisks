@@ -35,7 +35,7 @@ CREATE TABLE IF NOT EXISTS vendas (
 
 CREATE TABLE IF NOT EXISTS itensVenda (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    estoque INT NOT NULL DEFAULT 0,
+    quantidade INT NOT NULL DEFAULT 0,
     id_cd INT NOT NULL,
     id_venda INT NOT NULL,
     FOREIGN KEY (id_venda) REFERENCES vendas(id),

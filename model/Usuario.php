@@ -1,12 +1,15 @@
 <?php
+require_once "ConexaoBD.php";
+require_once "Venda.php";
 
 class Usuario
 {
-    private int $id, $tipo, $data_criacao;
-    private string $nome, $email, $senha;
+    private int $id;
+    private string $tipo, $nome, $email, $senha;
+    private ?string $data_criacao;
     private static ConexaoBD $conexao;
 
-    public function __construct(int $tipo, string $nome, string $email, string $senha, int $id = 0, int $data_criacao = 0)
+    public function __construct(string $tipo, string $nome, string $email, string $senha, int $id = 0, ?string $data_criacao = null)
     {
         $this->id = $id;
         $this->tipo = $tipo;
@@ -19,6 +22,7 @@ class Usuario
 
     public static function getAll()
     {
+        if (!isset(self::$conexao)) self::$conexao = ConexaoBD::getInstance();
         try {
             $stmt = self::$conexao->getPDO()->prepare("SELECT * FROM usuarios");
             $stmt->execute();
@@ -30,19 +34,20 @@ class Usuario
             }
 
             return $result;
-        } catch (\Throwable $th) {}
+        } catch (PDOException $th) {}
         return false;
     }
 
     public static function find(int $id)
     {
+        if (!isset(self::$conexao)) self::$conexao = ConexaoBD::getInstance();
         try {
             $stmt = self::$conexao->getPDO()->prepare("SELECT * FROM usuarios WHERE id = :id");
             $stmt->bindParam(':id', $id, PDO::PARAM_INT);
             $stmt->execute();
 
             if ($linha = $stmt->fetch(PDO::FETCH_ASSOC)) return new Usuario($linha['tipo'], $linha['nome'], $linha['email'], $linha['senha'], $linha['id'], $linha['data_criacao']);
-        } catch (\Throwable $th) {}
+        } catch (PDOException $th) {}
         return false;
     }
 
@@ -66,8 +71,10 @@ class Usuario
             
             if ($stmt->rowCount() > 0) {
                 $this->id = self::$conexao->getPDO()->lastInsertId();
-                $this->data_criacao = self::find(self::$conexao->getPDO()->lastInsertId())->getDataCriacao();
-                return true;
+                if (($self = self::find($this->id)) instanceof Usuario){
+                    $this->data_criacao = $self->getDataCriacao();
+                    return true;
+                }
             }
             else {}
         } catch (PDOException $th) {}
@@ -94,13 +101,19 @@ class Usuario
     public function delete()
     {
         try {
+            foreach (Venda::getAll($this->id) as $venda) {
+                if (!$venda->delete()) return false;
+            }
             $stmt = self::$conexao->getPDO()->prepare("DELETE FROM usuarios WHERE id = :id");
-            $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+            $stmt->bindParam(':id', $this->id, PDO::PARAM_INT);
             $stmt->execute();
 
-            if ($stmt->rowCount() > 0) return true;
+            if ($stmt->rowCount() > 0) {
+                $this->id = 0;
+                return true;
+            }
             else {}
-        } catch (\Throwable $th) {}
+        } catch (PDOException $th) {}
         return false;
     }
 
@@ -110,13 +123,13 @@ class Usuario
     }
 
     public function getId(): int { return $this->id; }
-	public function getTipo(): int { return $this->tipo; }
+	public function getTipo(): string { return $this->tipo; }
     public function getNome(): string { return $this->nome; }
     public function getEmail(): string { return $this->email; }
     public function getSenha(): string { return $this->senha; }
     public function getDataCriacao() { return $this->data_criacao; }
 
-	public function setTipo(int $tipo) { if(isset($tipo)) $this->tipo = $tipo; }
+	public function setTipo(string $tipo) { if(isset($tipo)) $this->tipo = $tipo; }
     public function setNome(string $nome) { if(isset($nome)) $this->nome = $nome; }
     public function setEmail(string $email) { if(isset($email)) $this->email = $email; }
     public function setSenha(string $senha) { if(isset($senha)) $this->senha = $senha; }
