@@ -74,12 +74,12 @@ Antes de começar, certifique-se de ter instalado:
 3. Importe o schema:
    - Selecione o banco `db_web_loja` criado
    - Clique na aba "**SQL**"
-   - Abra o arquivo `schema.sql` do projeto em um editor de texto
+   - Abra o arquivo `db_web_loja.sql` do projeto em um editor de texto
    - Copie todo o conteúdo do arquivo
    - Cole no campo de texto do phpMyAdmin
    - Clique em "**Executar**" (ou "Go")
 
-   **Alternativa**: Use a aba "Importar" para importar o arquivo `schema.sql` diretamente.
+   **Alternativa**: Use a aba "Importar" para importar o arquivo `db_web_loja.sql` diretamente.
 
 4. Verifique se as tabelas foram criadas:
    - `cds` - produtos (CDs e vinis)
