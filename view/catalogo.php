@@ -1,8 +1,8 @@
 <?php
-require_once "../Model/Usuario.php";
-require_once "../Model/CD.php";
-require_once "../Model/ItemVenda.php";
-require_once "../Model/Venda.php";
+require_once "../model/Usuario.php";
+require_once "../model/CD.php";
+require_once "../model/ItemVenda.php";
+require_once "../model/Venda.php";
 
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
@@ -106,7 +106,7 @@ if (isset($_GET['categoria']) && $_GET['categoria'] !== "Todos") {
                             </p>
 
                             <!-- Formulário integrado com o controller -->
-                            <form action="../Controller/controller.php" method="POST" style="display: flex; gap: 8px;">
+                            <form action="../controller/controller.php" method="POST" style="display: flex; gap: 8px;">
 
                                 <?php if (!isset($_SESSION['venda_atual'])): ?>
                                     <input type="hidden" name="action" value="criarVenda">

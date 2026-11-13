@@ -1,6 +1,6 @@
 <?php
-require_once "../Model/ConexaoBD.php";
-require_once "../Model/usuario.php";
+require_once "../model/ConexaoBD.php";
+require_once "../model/Usuario.php";
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
@@ -32,7 +32,7 @@ if (!isset($_SESSION['usuario']) || $_SESSION['usuario']->getTipo() != "admin") 
 
             <div class="card-body">
 
-                <form action="../Controller/controller.php" method="POST">
+                <form action="../controller/controller.php" method="POST">
 
                     <input type="hidden" name="action" value="cadastrarCD">
 

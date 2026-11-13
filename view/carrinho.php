@@ -1,8 +1,8 @@
 <?php
-require_once "../Model/Usuario.php";
-require_once "../Model/CD.php";
-require_once "../Model/ItemVenda.php";
-require_once "../Model/Venda.php";
+require_once "../model/Usuario.php";
+require_once "../model/CD.php";
+require_once "../model/ItemVenda.php";
+require_once "../model/Venda.php";
 
 session_start();
 
@@ -81,7 +81,7 @@ foreach ($itens as $item) {
                             R$ <?= number_format($item->getCd()->getPreco(), 2, ",", ".") ?>
                         </p>
 
-                        <form action="../Controller/controller.php?action=removerItemVenda" method="POST">
+                        <form action="../controller/controller.php?action=removerItemVenda" method="POST">
                             <input type="hidden" name="index" value="<?= $index ?>">
                             <button>Remover</button>
                         </form>
@@ -92,7 +92,7 @@ foreach ($itens as $item) {
                     Total: R$ <?= number_format($total, 2, ",", ".") ?>
                 </h3>
 
-                <form action="../Controller/controller.php?action=finalizarVenda" method="POST"
+                <form action="../controller/controller.php?action=finalizarVenda" method="POST"
                     style="text-align:right; margin-top:10px;">
                     <button>Confirmar Compra</button>
                 </form>

@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once "../Model/CD.php";
+require_once "../model/CD.php";
 
 // Buscar CDs do banco
 $produtos = CD::getAll();
@@ -96,7 +96,7 @@ $produtos = CD::getAll();
                     <td style="padding:12px; text-align:center;">
 
                         <!-- EXCLUIR CD -->
-                        <form action="../controller/Controller.php" method="POST" style="display:inline;">
+                        <form action="../controller/controller.php" method="POST" style="display:inline;">
                             <input type="hidden" name="action" value="deletarCD">
                             <input type="hidden" name="id" value="<?= $p->getId() ?>">
                             <button type="submit"

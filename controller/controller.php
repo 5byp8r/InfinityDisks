@@ -1,8 +1,8 @@
 <?php
-require_once "../Model/Usuario.php";
-require_once "../Model/CD.php";
-require_once "../Model/ItemVenda.php";
-require_once "../Model/Venda.php";
+require_once "../model/Usuario.php";
+require_once "../model/CD.php";
+require_once "../model/ItemVenda.php";
+require_once "../model/Venda.php";
 
 if (session_status() === PHP_SESSION_NONE) {
     session_start();

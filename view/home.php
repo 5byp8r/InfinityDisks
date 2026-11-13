@@ -1,6 +1,6 @@
 <?php
-require_once "../Model/ConexaoBD.php";
-require_once "../Model/usuario.php";
+require_once "../model/ConexaoBD.php";
+require_once "../model/Usuario.php";
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }

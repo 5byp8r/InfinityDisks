@@ -51,7 +51,7 @@
             <br>
 
             <div style="max-width: 450px; margin: 0 auto;">
-                <form action="../Controller/controller.php" method="POST"
+                <form action="../controller/controller.php" method="POST"
                     style="display:flex; flex-direction:column; gap:15px;">
                     <input type="hidden" name="action" value="cadastrar">
                     <div>
